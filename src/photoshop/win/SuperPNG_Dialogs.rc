@@ -102,7 +102,7 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,95,100,50,14
     CONTROL         "SUPERPNG_BANNER",3,"Static",SS_BITMAP,13,7,15,13
     CTEXT           "SuperPNG",5,102,40,33,8
-    CTEXT           "by Brendan Bolles and Kornel Lesinski",6,41,49,152,8
+    CTEXT           "by Brendan Bolles and Kornel Lesinski\n forked by Radek Dutkiewicz",6,41,49,152,20
     CTEXT           "Version String",4,82,73,77,8
 END
 
@@ -120,8 +120,8 @@ SUPERPNG_BANNER         BITMAP                  "SuperPNG_banner.bmp"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,5,0,0
- PRODUCTVERSION 2,5,0,0
+ FILEVERSION 2,5,1,0
+ PRODUCTVERSION 2,5,1,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -139,7 +139,7 @@ BEGIN
             VALUE "FileDescription", "SuperPNG"
             VALUE "FileVersion", "2.5"
             VALUE "InternalName", "SuperPNG"
-            VALUE "LegalCopyright", "Copyright (C) 2002-2014"
+            VALUE "LegalCopyright", "Copyright (C) 2002-2018"
             VALUE "OriginalFilename", "SuperPNG.dll"
             VALUE "ProductName", "SuperPNG Photoshop Plug-in"
             VALUE "ProductVersion", "2.5"
