@@ -89,6 +89,11 @@ Boolean ReadScriptParamsOnWrite(GPtr globals)
 							gOptions.metadata = boolStoreValue;
 							break;
 					
+					case keyPNGpremultiply:
+							PIGetBool(token, &boolStoreValue);
+							gOptions.premultiply = boolStoreValue;
+							break;
+
 					case keyPNGalpha:
 							PIGetEnum(token, &ostypeStoreValue);
 							gOptions.alpha = KeyToAlpha(ostypeStoreValue);
@@ -166,6 +171,7 @@ OSErr WriteScriptParamsOnWrite(GPtr globals)
 			
 			PIPutBool(token, keyPNGinterlace, gOptions.interlace);
 			PIPutBool(token, keyPNGmeta, gOptions.metadata);
+			PIPutBool(token, keyPNGpremultiply, gOptions.premultiply);
 			
 			gotErr = CloseWriter(&token); /* closes and sets dialog optional */
 			/* done.  Now pass handle on to Photoshop */

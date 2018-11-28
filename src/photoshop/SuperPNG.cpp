@@ -73,7 +73,8 @@ static void InitGlobals(Ptr globalPtr)
 	gOptions.filter 			= PNG_ALL_FILTERS;
 	gOptions.strategy			= Z_DEFAULT_STRATEGY;
 	gOptions.interlace  		= PNG_INTERLACE_NONE;
-	gOptions.metadata			= TRUE;
+	gOptions.metadata			= FALSE;
+	gOptions.premultiply		= FALSE;
 	gOptions.alpha				= PNG_ALPHA_TRANSPARENCY;
 	gOptions.clean_transparent	= FALSE;
 	gOptions.pngquant			= FALSE;
@@ -413,6 +414,7 @@ static void DoOptionsStart(GPtr globals)
 		params.quantize_quality = gOptions.quant_quality;
 		params.interlace		= gOptions.interlace;
 		params.metadata			= gOptions.metadata;
+		params.premultiply		= gOptions.premultiply;
 		params.alpha			= (DialogAlpha)gOptions.alpha;
 		params.clean_transparent = gOptions.clean_transparent;
 	
@@ -435,6 +437,7 @@ static void DoOptionsStart(GPtr globals)
 			gOptions.quant_quality		= params.quantize_quality;
 			gOptions.interlace			= params.interlace;
 			gOptions.metadata			= params.metadata;
+			gOptions.premultiply		= params.premultiply;
 			gOptions.alpha				= params.alpha;
 			gOptions.clean_transparent	= params.clean_transparent;
 			

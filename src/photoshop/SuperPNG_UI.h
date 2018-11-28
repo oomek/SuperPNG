@@ -57,6 +57,7 @@ typedef struct {
 	unsigned int		quantize_quality;
 	bool				interlace;
 	bool				metadata;
+	bool				premultiply;
 	DialogAlpha			alpha;
 	bool				clean_transparent;
 } SuperPNG_OutUI_Data;

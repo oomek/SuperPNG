@@ -77,6 +77,7 @@ typedef struct {
 	A_long		strategy;
 	A_Boolean	interlace;
 	A_Boolean	metadata;
+	A_Boolean	premultiply;
 	PNG_Alpha	alpha;
 	A_Boolean	clean_transparent;
 	A_long		quant_quality;

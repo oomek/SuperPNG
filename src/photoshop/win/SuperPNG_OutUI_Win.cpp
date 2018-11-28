@@ -55,7 +55,8 @@ enum {
 	OUT_Alpha_Radio_None,
 	OUT_Alpha_Radio_Transparency,
 	OUT_Alpha_Radio_Channel,
-	OUT_Clean_Transparent
+	OUT_Clean_Transparent,
+	OUT_Premultiply_Check
 };
 
 // sensible Win macros
@@ -75,7 +76,8 @@ static DialogCompression	g_compression = DIALOG_COMPRESSION_NORMAL;
 static bool					g_quantize = false;
 static int					g_quant_qual = 80;
 static bool					g_interlace = false;
-static bool					g_metadata = true;
+static bool					g_metadata = false;
+static bool					g_premultiply = false;
 static DialogAlpha			g_alpha = DIALOG_ALPHA_NONE;
 static bool					g_clean_trans = false;
 
@@ -112,6 +114,7 @@ static void TrackAlpha(HWND hwndDlg)
 	const BOOL none_checked = GET_CHECK(OUT_Alpha_Radio_None);
 
 	ENABLE_ITEM(OUT_Clean_Transparent, !none_checked);
+	ENABLE_ITEM(OUT_Premultiply_Check, !none_checked);
 }
 
 static BOOL CALLBACK DialogProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM lParam) 
@@ -152,10 +155,13 @@ static BOOL CALLBACK DialogProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARA
 
 			SET_CHECK(OUT_Interlacing_Check, g_interlace);
 			SET_CHECK(OUT_Metadata_Check, g_metadata);
+			SET_CHECK(OUT_Premultiply_Check, g_premultiply);
+
 
 			if(!g_have_transparency)
 			{
 				ENABLE_ITEM(OUT_Alpha_Radio_Transparency, FALSE);
+				ENABLE_ITEM(OUT_Premultiply_Check, FALSE);
 
 				if(g_alpha == DIALOG_ALPHA_TRANSPARENCY)
 				{
@@ -204,6 +210,16 @@ static BOOL CALLBACK DialogProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARA
 				case OUT_Alpha_Radio_Channel:
 					TrackAlpha(hwndDlg);
 					return TRUE;
+
+				case OUT_Clean_Transparent:
+					if (GET_CHECK(OUT_Clean_Transparent))
+						SET_CHECK(OUT_Premultiply_Check, FALSE);
+					return TRUE;
+
+				case OUT_Premultiply_Check:
+					if (GET_CHECK(OUT_Premultiply_Check))
+						SET_CHECK(OUT_Clean_Transparent, FALSE);
+					return TRUE;
 			}
 			return FALSE;
 
@@ -225,6 +241,7 @@ static BOOL CALLBACK DialogProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARA
 
 					g_interlace = GET_CHECK(OUT_Interlacing_Check);
 					g_metadata = GET_CHECK(OUT_Metadata_Check);
+					g_premultiply = GET_CHECK(OUT_Premultiply_Check);
 
 					g_alpha =	GET_CHECK(OUT_Alpha_Radio_None) ? DIALOG_ALPHA_NONE :
 								GET_CHECK(OUT_Alpha_Radio_Transparency) ? DIALOG_ALPHA_TRANSPARENCY :
@@ -255,6 +272,7 @@ SuperPNG_OutUI(
 	g_quant_qual	= params->quantize_quality;
 	g_interlace		= params->interlace;
 	g_metadata		= params->metadata;
+	g_premultiply	= params->premultiply;
 	g_alpha			= params->alpha;
 	g_clean_trans	= params->clean_transparent;
 	
@@ -273,6 +291,7 @@ SuperPNG_OutUI(
 		params->quantize_quality = g_quant_qual;
 		params->interlace		= g_interlace;
 		params->metadata		= g_metadata; 
+		params->premultiply		= g_premultiply;
 		params->alpha			= g_alpha;
 		params->clean_transparent = g_clean_trans;
 

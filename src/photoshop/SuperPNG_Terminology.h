@@ -37,6 +37,7 @@
 #define keyPNGstrategy			'pngS'
 #define keyPNGinterlace			'pngI'
 #define keyPNGmeta				'pngM'
+#define keyPNGpremultiply		'pngP'
 #define keyPNGalpha				'pngA'
 #define keyPNGcleanTransparent	'pngX'
 #define keyPNGpngquant			'pngQ'

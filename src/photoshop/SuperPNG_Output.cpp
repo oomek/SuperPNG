@@ -64,6 +64,8 @@ static void png_replace_flush(png_structp png_ptr)
 #pragma mark-
 
 #define PF_HALF_CHAN16			16384
+#define PF_MAX_CHAN8			255
+#define PF_MAX_CHAN16			32768
 
 static inline unsigned16 Promote(unsigned16 val)
 {
@@ -593,6 +595,40 @@ static void CleanYA(T *pix, int64 len)
 	}
 }
 
+template <typename T, int MAX_VAL>
+static void PremultiplyRGBA(T *buf, int64 len)
+{
+	while (len--)
+	{
+		if (buf->a != 255)
+		{
+			const float mult = (float)buf->a / (float)MAX_VAL;
+
+			buf->r = ((float)buf->r * mult) + 0.5f;
+			buf->g = ((float)buf->g * mult) + 0.5f;
+			buf->b = ((float)buf->b * mult) + 0.5f;
+		}
+
+		buf++;
+	}
+}
+
+
+template <typename T, int MAX_VAL>
+static void PremultiplyYA(T *buf, int64 len)
+{
+	while (len--)
+	{
+		if (buf->a != 255)
+		{
+			const float mult = (float)buf->a / (float)MAX_VAL;
+
+			buf->y = ((float)buf->y * mult) + 0.5f;
+		}
+
+		buf++;
+	}
+}
 
 static void CleanTransparent(GPtr globals, int num_channels, int64 len)
 {
@@ -612,6 +648,23 @@ static void CleanTransparent(GPtr globals, int num_channels, int64 len)
 	}
 }
 
+static void Premultiply(GPtr globals, int num_channels, int64 len)
+{
+	if (num_channels == 4)
+	{
+		if (gStuff->depth == 16)
+			PremultiplyRGBA<RGBApixel16, PF_MAX_CHAN16>((RGBApixel16 *)gPixelData, len);
+		else if (gStuff->depth == 8)
+			PremultiplyRGBA<RGBApixel8, PF_MAX_CHAN8>((RGBApixel8 *)gPixelData, len);
+	}
+	else if (num_channels == 2)
+	{
+		if (gStuff->depth == 16)
+			PremultiplyYA<YApixel16, PF_MAX_CHAN16>((YApixel16 *)gPixelData, len);
+		else if (gStuff->depth == 8)
+			PremultiplyYA<YApixel8, PF_MAX_CHAN8>((YApixel8 *)gPixelData, len);
+	}
+}
 
 typedef struct {
 	unsigned8 *buf;
@@ -901,6 +954,12 @@ void SuperPNG_WriteFile(GPtr globals)
 					CleanTransparent(globals, num_channels, pixels);
 				}
 				
+				if (gOptions.premultiply)
+				{
+					const int64 pixels = (int64)width * (int64)height;
+					
+					Premultiply(globals, num_channels, pixels);
+				}
 				
 				if(gOptions.pngquant)
 				{
@@ -1105,6 +1164,12 @@ void SuperPNG_WriteFile(GPtr globals)
 					CleanTransparent(globals, num_channels, pixels);
 				}
 				
+				if (gOptions.premultiply)
+				{
+					const int64 pixels = (int64)width * (int64)height;
+					
+					Premultiply(globals, num_channels, pixels);
+				}
 				
 				if(gStuff->depth == 16)
 				{
