@@ -75,7 +75,8 @@ bool
 SuperPNG_InUI(
 	SuperPNG_InUI_Data	*params,
 	const void			*plugHndl,
-	const void			*mwnd);
+	const void			*mwnd,
+	int					playInfo);
 
 bool
 SuperPNG_OutUI(

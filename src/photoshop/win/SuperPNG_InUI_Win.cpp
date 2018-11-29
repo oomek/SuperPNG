@@ -196,7 +196,8 @@ bool
 SuperPNG_InUI(
 	SuperPNG_InUI_Data	*params,
 	const void			*plugHndl,
-	const void			*mwnd)
+	const void			*mwnd,
+	int					playInfo)
 {
 	bool continue_reading = true;
 
@@ -209,7 +210,7 @@ SuperPNG_InUI(
 	// check for that shift key
 	bool shift_key = ( KeyIsDown(VK_LSHIFT) || KeyIsDown(VK_RSHIFT) || KeyIsDown(VK_LMENU) || KeyIsDown(VK_RMENU) );
 
-	if(g_always || shift_key)
+	if ((g_always || shift_key) && playInfo == plugInDialogSilent)
 	{
 		int status = DialogBox(hDllInstance, (LPSTR)"IN_DIALOG", (HWND)mwnd, (DLGPROC)DialogProc);
 

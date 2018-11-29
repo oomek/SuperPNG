@@ -293,7 +293,9 @@ static void DoReadStart(GPtr globals)
 
 		// SuperPNG_InUI is responsible for not popping a dialog if the user
 		// didn't request it.  It still has to set the read settings from preferences though.
-		bool result = SuperPNG_InUI(&params, plugHndl, hwnd);
+
+		PIDescriptorParameters * descParams = globals->formatParamBlock->descriptorParameters;
+		bool result = SuperPNG_InUI(&params, plugHndl, hwnd, descParams->playInfo);
 		
 		if(result)
 		{

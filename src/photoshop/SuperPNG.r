@@ -239,6 +239,12 @@ resource 'aete' (ResourceID, plugInName " dictionary", purgeable)
 				"Clear areas where alpha is 0",
 				flagsSingleProperty,
 				
+				"Premultiply Alpha",
+				keyPNGpremultiplyAlpha,
+				typeBoolean,
+				"Multiply RGB by Alpha",
+				flagsSingleProperty,
+				
 				"Quantizing",
 				keyPNGpngquant,
 				typeBoolean,

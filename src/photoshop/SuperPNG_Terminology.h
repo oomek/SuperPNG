@@ -40,6 +40,7 @@
 #define keyPNGpremultiply		'pngP'
 #define keyPNGalpha				'pngA'
 #define keyPNGcleanTransparent	'pngX'
+#define keyPNGpremultiplyAlpha	'pngP'
 #define keyPNGpngquant			'pngQ'
 #define keyPNGquantQuality		'pngq'
 
